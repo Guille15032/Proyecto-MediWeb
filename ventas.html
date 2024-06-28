@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicamentos - MediWeb</title>
+    <link rel="shorcut icon" href="images/iconpestaña.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #ffffff;
+            /* Light background */
+            color: #2b2b2b;
+            /* Dark text color */
+            font-family: sans-serif;
+            /* Modern font */
+            margin: 0;
+            /* Remove default margin */
+            padding-top: 60px;
+            /* Prevent content from hiding under the fixed header */
+        }
+
+        header {
+            background-color: #854fb8;
+            /* Dark background */
+            color: #ffffff;
+            /* Light text color */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            z-index: 1000;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            margin: 0 1rem;
+        }
+
+        .menu a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .menu a::after {
+            /* Hover underline */
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #f8f3fd;
+            bottom: -3px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom left;
+            transition: transform 0.3s ease-out;
+        }
+
+        .menu a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .menu-button {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .menu-button div {
+            width: 25px;
+            height: 3px;
+            background-color: #ffffff;
+            margin: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #854fb8;
+                position: absolute;
+                top: 60px;
+                /* Ajusta esto según sea necesario para que el menú no se superponga con otros elementos */
+                left: 0;
+                z-index: 100;
+                /* Asegura que el menú esté por encima de otros contenidos si es necesario */
+            }
+
+            .menu li {
+                margin: 1rem 0;
+                text-align: center;
+            }
+
+            .menu-button {
+                display: flex;
+            }
+
+            .menu.show {
+                display: flex;
+            }
+        }
+
+
+        .content {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px;
+        }
+
+        .column {
+            flex: 1 1 30%;
+            margin: 10px;
+            background-color: #c997f8;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .medicine-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .medicine-card img {
+            width: 150px;
+            height: auto;
+            margin-right: 10px;
+            border-radius: 8px;
+        }
+
+        .medicine-info h2 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .medicine-info p {
+            font-size: 16px;
+            color: #1d1d1d;
+            margin: 0;
+        }
+
+        .logo img {
+            margin-top: 10px;
+            width: 250px;
+            /* Ajusta el tamaño de la imagen del logo */
+            height: auto;
+            /* Mantiene la proporción de la imagen */
+        }
+
+        .buy-button-ventas {
+            margin-bottom: 100%;
+            margin-top: 200px;
+            background-color: #854fb8;
+            border: #854fb8;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+
+        }
+
+        .search-container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .search-bar {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Media Query for Mobile Devices */
+        @media (max-width: 600px) {
+            .search-container {
+                width: 80%;
+                padding: 15px;
+                margin-bottom: 30px;
+            }
+
+            .search-bar {
+                width: calc(100% - 10px);
+                padding: 8px;
+            }
+
+
+            .menu-button {
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .menu-button div {
+                width: 25px;
+                height: 3px;
+                background-color: #ffffff;
+                margin: 3px;
+            }
+
+        }
+
+        #productos-carrito {
+            text-align: center;
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 300px;
+            height: 100%;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 10px 0 0 10px;
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            overflow-y: auto;
+            z-index: 1000;
+
+        }
+
+
+        #productos-carrito.mostrar {
+            right: 0;
+        }
+
+        #productos-carrito h2,
+        #productos-carrito h3 {
+            margin-top: 0;
+        }
+
+        button {
+            background-color: #854fb8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #7a3aa8;
+        }
+
+        #mostrar-carrito {
+            position: fixed;
+            right: -10px;
+            top: 25%;
+            transform: translateY(-50%);
+            z-index: 1001;
+            transition: right 0.3s ease-in-out;
+            z-index: 999;
+        }
+
+        .animacion-botones {
+            transition: right 0.3s ease-in-out;
+        }
+
+
+        #mostrar-carrito:hover {
+            background-color: #7a3aa8;
+        }
+
+        .agregar-carrito-btn {
+            background-color: #854fb8;
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .agregar-carrito-btn:hover {
+            background-color: #7a3aa8;
+        }
+
+        .cerrar-carrito {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .carrito-item {
+            border-width: 20px;
+            border-color: #854fb8;
+            background-color: #c997f8;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logoblanco.png" alt="Logo" width="120px" height="70px">
+            </a>
+        </div>
+        <div class="menu-button" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul class="menu">
+            <li><a href="vademecum.html">Vademecum</a></li>
+            <li><a href="ventas.html">Medicamentos</a></li>
+            <!--<li><a href="https://8081-idx-teachers-js-vanilla-1717021570831.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev/">Productos</a></li>-->
+            <li><a href="login.html">Iniciar sesión</a></li>
+        </ul>
+    </header>
+
+    <center>
+        <h2>Nuestros medicamentos</h2>
+        <p>¡Encuentre el mejor medicamento para usted!</p>
+    </center>
+    <div class="search-container">
+        <input type="text" id="search-bar" class="search-bar" onkeyup="searchMedicines()"
+            placeholder="Buscar medicamento...">
+    </div>
+
+
+    <center>
+        <div class="filter-container">
+            <select onchange="filterMedicines(this.value)">
+                <option value="all">Ver todos</option>
+                <option value="analgesico">Analgesicos</option>
+                <option value="antibiotico">Antibioticos</option>
+                <option value="antidepresivo">Antidepresivos</option>
+                <option value="antihipertensivo">Antihipertensivo</option>
+                <option value="antistaminico">Antihistamínico</option>
+                <option value="parkinson">Antiparkinsonianos</option>
+                <option value="vertiginosos">Antivertiginosos</option>
+                <option value="antiviral">Antivirales</option>
+                <option value="astringentes">Astringentes</option>
+                <option value="bronco">Broncodilatadores</option>
+                <option value="cardio">Cardiovasculares</option>
+                <option value="corticoides">Corticoides</option>
+                <option value="desparasitantes">Desparasitantes</option>
+                <option value="espectorante">Espectorantes</option>
+                <option value="estatinas">Estatinas</option>
+                <option value="laxante">Laxantes</option>
+                <option value="suplementos">Suplementos</option>
+            </select>
+        </div>
+
+    </center>
+
+
+    <body>
+        <!-- Nuevo contenedor para mostrar los productos del carrito -->
+        <div id="productos-carrito">
+            <h2 style="text-align: center;">Productos en el Carrito</h2>
+            <div id="lista-productos-carrito">
+                <!-- Aquí se mostrarán los productos del carrito visualmente -->
+
+            </div>
+            <div id="mensaje-carrito-vacio"
+                style="display: none; text-align: center; margin-top: 20px; margin-bottom: 20px;">
+                No has agregado ningún producto al carrito 😕
+            </div>
+
+            <h3>Total: $<span id="total-precio">0</span></h3>
+
+            <div>
+                <button id="vaciar-carrito">Vaciar Carrito</button>
+                <button id="ir-a-pagar" class="agregar-carrito-btn">Ir a Pagar</button>
+            </div>
+        </div>
+
+
+
+        <button style="font-size: 30px; z-index: 999;" id="mostrar-carrito">🛒</button>
+
+        <script src="carrito.js"></script>
+    </body>
+
+
+    <div class="content">
+
+        <!-- Tarjeta de medicamento 1 -->
+        <div class="column analgesico">
+            <div class="medicine-card">
+                <a href="acetaminofen-tizanidina.html">
+                    <img src="images/acetaminofen-tizanidina 350.png" alt="Acetaminofén + Tizanidina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Acetaminofén + Tizanidina</h2>
+                    <p>350mg - 2mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="acetaminofen-tizanidina.html" class="buy-button-ventas">Ver más</a>
+                    <button class="btn-agregar" data-id="1">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 2 -->
+        <div class="column analgesico">
+            <div class="medicine-card">
+                <a href="acetaminofen.html">
+                    <img src="images/Acetaminofen.webp" alt="Acetaminofén">
+                </a>
+                <div class="medicine-info">
+                    <h2>Acetaminofén</h2>
+                    <p>500mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="acetaminofen.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="2">🛒</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de medicamento 3 -->
+        <div class="column analgesico">
+            <div class="medicine-card">
+                <a href="acetaminofe-codeina.html">
+                    <img src="images/ACETAMINO-CODEINA-325-8-MK_F.png" alt="Acetaminoféns + Codeina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Acetaminofén + Codeina</h2>
+                    <p>325mg - 30mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="acetaminofe-codeina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="3">🛒</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de medicamento 4 -->
+        <div class="column analgesico">
+            <div class="medicine-card">
+                <a href="acetaminofen-hidrocodona.html">
+                    <img src="images/ACETAMINOFEN-HIDROCODONA-BITAR_F.png" alt="Acetaminofén + Hidrocodona">
+                </a>
+                <div class="medicine-info">
+                    <h2>Acetaminofén + Hidrocodona</h2>
+                    <p>325mg - 5mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="acetaminofen-hidrocodona.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="4">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 5 -->
+        <div class="column antiviral">
+            <div class="medicine-card">
+                <a href="aciclovir.html">
+                    <img src="images/aciclovir2.jpg" alt="Aciclovir">
+                </a>
+                <div class="medicine-info">
+                    <h2>Aciclovir</h2>
+                    <p>200mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="aciclovir.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="5">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 6 -->
+        <div class="column desparasitantes">
+            <div class="medicine-card">
+                <a href="albendazol.html">
+                    <img src="images/albendaazol.jpg" alt="Albendazol">
+                </a>
+                <div class="medicine-info">
+                    <h2>Albendazol</h2>
+                    <p>200mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="albendazol.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="6">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 7 -->
+        <div class="column astringentes">
+            <div class="medicine-card">
+                <a href="alcohol-polivinilico.html">
+                    <img src="images/alcoholpolivinilico.jpg" alt="Alcohol polivinilico">
+                </a>
+                <div class="medicine-info">
+                    <h2>Alcohol polivinilico</h2>
+                    <p>1.4%</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="alcohol-polivinilico.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="7">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 8 -->
+        <div class="column cardio">
+            <div class="medicine-card">
+                <a href="amiodarona.html">
+                    <img src="images/amiodarona5.jpg" alt="Amiodarona">
+                </a>
+                <div class="medicine-info">
+                    <h2>Amiodarona</h2>
+                    <p>200mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="amiodarona.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="8">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 9 -->
+        <div class="column antidepresivo">
+            <div class="medicine-card">
+                <a href="amitriptilina.html">
+                    <a href="amitriptilina.html">
+                        <img src="images/amitriptilina.jpg" alt="Amitriptilina">
+                    </a>
+                </a>
+                <div class="medicine-info">
+                    <h2>Amitriptilina</h2>
+                    <p>25mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="amitriptilina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="9">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 10 -->
+        <div class="column antihipertensivo">
+            <div class="medicine-card">
+                <a href="amlodipino.html">
+                    <img src="images/amlodipino.webp" alt="Amlodipino">
+                </a>
+                <div class="medicine-info">
+                    <h2>Amlodipino</h2>
+                    <p>5mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="amlodipino.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="10">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 11 -->
+        <div class="column antibiotico">
+            <div class="medicine-card">
+                <a href="amoxicilina.html">
+                    <img src="images/amoxicilina.webp" alt="Amoxicilina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Amoxicilina</h2>
+                    <p>500mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="amoxicilina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="11">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 12 -->
+        <div class="column antibiotico">
+            <div class="medicine-card">
+                <a href="ampicilina.html">
+                    <img src="images/Ampicilina.webp" alt="Ampicilina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Ampicilina</h2>
+                    <p>250mg - 5ml</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="ampicilina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="12">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 13 -->
+        <div class="column analgesico">
+            <div class="medicine-card">
+                <a href="aspirina.html">
+                    <img src="images/Aspirina.webp" alt="Aspirina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Aspirina</h2>
+                    <p>500mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="aspirina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="13">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 13 -->
+        <div class="column estatinas">
+            <div class="medicine-card">
+                <a href="atorvastatina.html">
+                    <img src="images/atorvastatina.jpg" alt="Atorvastatina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Atorvastatina</h2>
+                    <p>20mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="atorvastatina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="14">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 14 -->
+        <div class="column estatinas">
+            <div class="medicine-card">
+                <a href="atorvastatina40.html">
+                    <img src="images/atorvastatina40.webp" alt="Atorvastatina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Atorvastatina</h2>
+                    <p>40mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="atorvastatina40.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="15">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 15 -->
+        <div class="column antibiotico">
+            <div class="medicine-card">
+                <a href="azitromicina.html">
+                    <img src="images/Azitromicina.webp" alt="Azitromicina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Azitromicina</h2>
+                    <p>200mg - 5ml</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="azitromicina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="16">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 16 -->
+        <div class="column corticoides">
+            <div class="medicine-card">
+                <a href="beclometasona.html">
+                    <img src="images/beclometasona.webp" alt="Beclometasona">
+                </a>
+                <div class="medicine-info">
+                    <h2>Beclometasona</h2>
+                    <p>250mcg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="beclometasona.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="17">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 17 -->
+        <div class="column analgesico">
+            <div class="medicine-card">
+                <a href="bencidamina.html">
+                    <img src="images/bencidamina.webp" alt="Bencidamina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Bencidamina</h2>
+                    <p>3mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="bencidamina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="18">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 18 -->
+        <div class="column vertiginosos">
+            <div class="medicine-card">
+                <a href="betahistina24.html">
+                    <img src="images/betahistina24.png" alt="Betahistina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Betahistina</h2>
+                    <p>24mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="betahistina24.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="19">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 19 -->
+        <div class="column vertiginosos">
+            <div class="medicine-card">
+                <a href="betahistina8.html">
+                    <img src="images/betahistina8.webp" alt="Betahistina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Betahistina</h2>
+                    <p>8mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="betahistina8.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="20">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 20 -->
+        <div class="column antibiotico">
+            <div class="medicine-card">
+                <a href="betametasona-clotrimazol-neo.html">
+                    <img src="images/betameta+clotrimazol.png" alt="Betametasona + Clotrimazol + Neomicina"></a>
+                <div class="medicine-info">
+                    <h2>Betametasona + Clotrimazol + Neomicina</h2>
+                    <p>40g</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="betametasona-clotrimazol-neo.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="21">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 21 -->
+        <div class="column antibiotico">
+            <div class="medicine-card">
+                <a href="betaduo.html">
+                    <img src="images/betaduo2.webp" alt="Betaduo">
+                </a>
+                <div class="medicine-info">
+                    <h2>Betaduo</h2>
+                    <p>2ml</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="betaduo.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="22">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 22 -->
+        <div class="column corticoides">
+            <div class="medicine-card">
+                <a href="betametasona.html">
+                    <img src="images/betametasona005.jpg" alt="Betametasona">
+                </a>
+                <div class="medicine-info">
+                    <h2>Betametasona</h2>
+                    <p>0.05%</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="betametasona.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="23">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 23 -->
+        <div class="column parkinson">
+            <div class="medicine-card">
+                <a href="biperideno.html">
+                    <img src="images/biperideno.jpg" alt="Biperideno">
+                </a>
+                <div class="medicine-info">
+                    <h2>Biperideno</h2>
+                    <p>2mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="biperideno.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="24">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 24 -->
+        <div class="column laxante">
+            <div class="medicine-card">
+                <a href="bisacodilo.html">
+                    <img src="images/bisacodilo3.jpg" alt="Bisacodilo">
+                </a>
+                <div class="medicine-info">
+                    <h2>Bisacodilo</h2>
+                    <p>5mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="bisacodilo.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="25">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 25 -->
+        <div class="column hipotensor">
+            <div class="medicine-card">
+                <a href="brimonidina.html">
+                    <img src="images/BRIMOFTAL.png" alt="Brimonidina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Brimonidina Tartrato</h2>
+                    <p>0.2%</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="brimonidina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="26">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 26 -->
+        <div class="column vertiginosos">
+            <div class="medicine-card">
+                <a href="buclizina.html">
+                    <img src="images/buclizina.webp" alt="Buclizina"></a>
+                <div class="medicine-info">
+                    <h2>Buclizina</h2>
+                    <p>25mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="buclizina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="27">🛒</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 27 -->
+        <div class="column suplementos">
+            <div class="medicine-card">
+                <a href="calcio-carbonato.html">
+                    <img src="images/calcio.png" alt="Calcio-carbonato">
+                </a>
+                <div class="medicine-info">
+                    <h2>Calcio Carbonato</h2>
+                    <p>600mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="calcio-carbonato.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="28">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 28 -->
+        <div class="column suplementos">
+            <div class="medicine-card">
+                <a href="calcio-vitamina-d.html">
+                    <img src="images/calcio-vitaminad.png" alt="Calcio-vitamina-d">
+                </a>
+                <div class="medicine-info">
+                    <h2>Calcio + Vitamina D</h2>
+                    <p>600mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="calcio-vitamina-d.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="29">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 29 -->
+        <div class="column suplementos">
+            <div class="medicine-card">
+                <a href="calcitriol.html">
+                    <img src="images/calcitriol.webp" alt="Calcitriol">
+                </a>
+                <div class="medicine-info">
+                    <h2>Calcitriol</h2>
+                    <p>0.25mcg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="calcitriol.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="30">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 30 -->
+        <div class="column antistaminico">
+            <div class="medicine-card">
+                <a href="loratadina.html">
+                    <img src="images/Loratadina.jpg" alt="Loratadina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Loratadina</h2>
+                    <p>5mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="loratadina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="31">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 31 -->
+        <div class="column espectorante">
+            <div class="medicine-card">
+                <a href="mieltertos.html">
+                    <img src="images/Mieltertos.jpg" alt="Mieltertos">
+                </a>
+                <div class="medicine-info">
+                    <h2>Mieltertos</h2>
+                    <p>240ml</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="mieltertos.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="32">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 32 -->
+        <div class="column bronco">
+            <div class="medicine-card">
+                <a href="salbutamol.html">
+                    <img src="images/Salbutamol.jpg" alt="Salbutamol">
+                </a>
+                <div class="medicine-info">
+                    <h2>Salbutamol</h2>
+                    <p>100mcg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="salbutamol.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="33">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 33 -->
+        <div class="column antihipertensivo">
+            <div class="medicine-card">
+                <a href="captopril25.html">
+                    <img src="images/Captopril25.png" alt="Captopril">
+                </a>
+                <div class="medicine-info">
+                    <h2>Captopril</h2>
+                    <p>25mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="captopril25.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="34">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 34 -->
+        <div class="column antihipertensivo">
+            <div class="medicine-card">
+                <a href="captopril50.html">
+                    <img src="images/Captopril50.png" alt="Captopril">
+                </a>
+                <div class="medicine-info">
+                    <h2>Captopril</h2>
+                    <p>50mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="captopril50.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="35">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 35 -->
+
+        <!-- Tarjeta de medicamento 36 -->
+        <div class="column cardio">
+            <div class="medicine-card">
+                <a href="carvedilol12.html">
+                    <img src="images/carvelidol12.5.jpg" alt="Carvedilol">
+                </a>
+                <div class="medicine-info">
+                    <h2>Carvedilol</h2>
+                    <p>12.5mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="carvedilol12.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="36">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 37 -->
+        <div class="column cardio">
+            <div class="medicine-card">
+                <a href="carvedilol25.html">
+                    <img src="images/carvelidol.jpg" alt="Carvedilol">
+                </a>
+                <div class="medicine-info">
+                    <h2>Carvedilol</h2>
+                    <p>25mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="carvedilol25.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="37">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 38 -->
+        <div class="column antibiotico">
+            <div class="medicine-card">
+                <a href="cefalexina.html">
+                    <img src="images/cefalexina.webp" alt="Cefalexina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Cefalexina</h2>
+                    <p>250mg - 5ml</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="cefalexina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="38">🛒</button>
+                </div>
+            </div>
+        </div>
+        <!-- Tarjeta de medicamento 39 -->
+        <div class="column antistaminico">
+            <div class="medicine-card">
+                <a href="cetirizina.html">
+                    <img src="images/cetirizina.webp" alt="Cetirizina">
+                </a>
+                <div class="medicine-info">
+                    <h2>Cetirizina</h2>
+                    <p>10mg</p>
+                    <p style="color: #c997f8;">.</p>
+                    <a href="cetirizina.html" class="buy-button-ventas">Ver más</a>
+                    <button style="font-size: 16px;" class="btn-agregar" data-id="39">🛒</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer style="background-color: #854fb8; color: #ffffff; padding: 20px;">
+        <div style="text-align: left; margin-left: auto; margin-right: auto;">
+            <img src="images/logoblanco.png" alt="Logo Blanco" width="300px">
+        </div>
+        <div style="text-align: right; margin-left: auto; margin-right: auto;">
+            <img src="images/super.png" alt="Super" width="200px">
+            <p style="color: #854fb8; font-size: 0.5px;">.</p>
+            <a href="https://wa.me/3118508486"><img src="images/chat.png" alt="WhatsApp" width="200px"></a>
+            <p style="font-size: 14px;">© 2024 MediWeb. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.menu').classList.toggle('show');
+        }
+    </script>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('show');
+        }
+
+        function filterMedicines(category) {
+            const columns = document.querySelectorAll('.column');
+            columns.forEach(column => {
+                if (category === 'all') {
+                    column.style.display = 'block';
+                } else {
+                    if (column.classList.contains(category)) {
+                        column.style.display = 'block';
+                    } else {
+                        column.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        function searchMedicines() {
+            const searchInput = document.getElementById('search-bar').value.toLowerCase();
+            const columns = document.querySelectorAll('.column');
+            columns.forEach(column => {
+                const medicineName = column.querySelector('.medicine-info h2').textContent.toLowerCase();
+                if (medicineName.includes(searchInput)) {
+                    column.style.display = 'block';
+                } else {
+                    column.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+    <script>
+        const irAPagarBtn = document.getElementById('irAPagarBtn');
+
+        irAPagarBtn.addEventListener('click', () => {
+            const productosCarrito = document.getElementById('productos-carrito');
+            const carritoItems = [];
+            productosCarrito.querySelectorAll('.carrito-item').forEach(item => {
+                const nombreProducto = item.querySelector('h4').innerText;
+                const precioProducto = item.querySelector('p').innerText;
+                carritoItems.push({ nombre: nombreProducto, precio: precioProducto });
+            });
+            sessionStorage.setItem('carritoItems', JSON.stringify(carritoItems));
+            const totalPrecio = document.getElementById('total-precio').innerText;
+            sessionStorage.setItem('totalPrecio', totalPrecio);
+            window.location.href = 'formularioper.html';
+        });
+    </script>
+
+
+
+
+</body>
+
+</html>

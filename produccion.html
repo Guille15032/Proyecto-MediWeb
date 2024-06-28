@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos - MediWeb</title>
+  <link rel="shorcut icon" href="images/iconpestaña.png" type="image/x-icon">
+
+  <style>
+    body {
+      background-color: #ffffff; /* Light background */
+      color: #2b2b2b; /* Dark text color */
+      font-family: sans-serif; /* Modern font */
+      margin: 0; /* Remove default margin */
+      padding-top: 60px; /* Prevent content from hiding under the fixed header */
+    }
+    header {
+      background-color: #854fb8; /* Dark background for header */
+      color: #ffffff; /* Light text color */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      z-index: 1000;
+    }
+    .menu {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .menu li {
+      margin: 0 1rem;
+    }
+    .menu a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      position: relative;
+    }
+    .menu a::after { /* Hover underline  */
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: #f8f3fd;
+      bottom: -3px;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: bottom left;
+      transition: transform 0.3s ease-out;
+    }
+    .menu a:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+    .menu-button {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    .menu-button div {
+      width: 25px;
+      height: 3px;
+      background-color: #ffffff;
+      margin: 3px;
+    }
+
+    .logo img {
+      margin-top: 10px;
+      width: 250px; /* Ajusta el tamaño de la imagen del logo */
+      height: auto; /* Mantiene la proporción de la imagen */
+    }
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #854fb8;
+        position: absolute;
+        top: 60px;
+        left: 0;
+      }
+      .menu li {
+        margin: 1rem 0;
+        text-align: center;
+      }
+      .menu-button {
+        display: flex;
+      }
+      .menu.show {
+        display: flex;
+      }
+
+      
+    }
+    h1, h2 {
+      text-align: center; /* Center align headings */
+    }
+    .product-container {
+      display: flex; /* Arrange elements side-by-side */
+      flex-direction: column; /* Stack elements vertically */
+      align-items: center; /* Center elements horizontally */
+      margin: 1rem;
+      padding: 1rem;
+      border: 5px solid #854fb8; /* Add a subtle border */
+      border-radius: 5px; /* Rounded corners */
+    }
+    .product-image {
+      width: 200px; /* Set image width */
+      margin-bottom: 1rem;
+    }
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px; /* Add some space between buttons */
+      margin-top: 10px; /* Add space above buttons */
+    }
+    .product-button {
+      background-color: #4CAF50; /* Green button color */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px; /* Rounded corners */
+      cursor: pointer; /* Indicate clickable button */
+    }
+    .cancel-button {
+      background-color: #F44336; /* Red button color */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px; /* Rounded corners */
+      cursor: pointer; /* Indicate clickable button */
+    }
+    .product-list {
+      display: flex; /* Display list items in a row */
+      flex-wrap: wrap; /* Allow items to wrap to the next line */
+      justify-content: center; /* Center items horizontally */
+      list-style: none; /* Remove default bullet points */
+      padding: 0;
+      margin: 1rem;
+    }
+    .product-list-item {
+      margin: 0.5rem;
+    }
+    /* New styles for rounded text fields */
+    input[type="text"] {
+      padding: 10px;
+      border: 3px solid #854fb8; /* Dark border */
+      border-radius: 10px; /* Rounded corners */
+      background-color: #f8f3fd; /* Dark background */
+      color: #444; /* Light text color */
+      margin-right: 10px; /* Add some space between the fields */
+    }
+    .med-item {
+      background-color: #efdeff; /* Dark background for med item */
+      color: #444; /* Light text color */
+      padding: 1rem;
+      border: 3px solid #854fb8; /* Subtle border */
+      border-radius: 15px; /* Rounded corners */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 200px; /* Fixed width */
+      height: 250px; /* Fixed height */
+      justify-content: space-between; /* Space elements evenly */
+      box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    }
+    .med-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px; /* Rounded corners */
+      cursor: pointer; /* Indicate clickable button */
+      margin-top: 10px;
+    }
+    .edit-button {
+      background-color: #FFEB3B; /* Yellow button color */
+      color: black;
+      border-radius: 10px; /* Rounded corners */
+    }
+    .delete-button {
+      background-color: #F44336; /* Red button color */
+      color: white;
+    }
+    .form-fields {
+      display: flex; /* Display fields in a row */
+      align-items: center; /* Center fields vertically */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logoblanco.png" alt="Logo" width="120px" height="70px">
+      </a>
+      
+    </div>
+    <div class="menu-button" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <ul class="menu">
+      <li><a href="ventas.html">Ventas</a></li>
+      <li><a href="https://8081-idx-teachers-js-vanilla-1717021570831.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev/">Productos</a></li>
+      <li><a href="login.html">Iniciar sesión</a></li>
+
+    </ul>
+  </header>
+
+  <div class="product-container">
+    <h2>Agregar Medicamento</h2>
+    <form id="product-form">
+      <div class="form-fields">
+        <input type="text" id="product-name" placeholder="Nombre" required>
+        <input type="text" id="product-concentration" placeholder="Concentración" required>
+      </div>
+      <div class="button-container">
+        <button type="submit" class="product-button">Agregar</button>
+        <button type="button" class="cancel-button" style="display:none;" onclick="resetForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+  <h2>Lista de Medicamentos</h2>
+  <ul class="product-list">
+  </ul>
+
+  <script>
+    function toggleMenu() {
+      document.querySelector('.menu').classList.toggle('show');
+    }
+
+    let editMode = false;
+    let editIndex = null;
+
+    document.getElementById('product-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Get values from input fields
+      const productName = document.getElementById('product-name').value;
+      const productConcentration = document.getElementById('product-concentration').value;
+
+      if (editMode) {
+        // Update the medication details
+        const medItem = document.querySelectorAll('.med-item')[editIndex];
+        medItem.querySelector('h3').textContent = productName;
+        medItem.querySelector('p').textContent = productConcentration;
+
+        // Reset form and button
+        resetForm();
+      } else {
+        // Create a new list item for the medication
+        const listItem = document.createElement('li');
+        listItem.classList.add('product-list-item');
+
+        // Create a container for the medication details
+        const medItem = document.createElement('div');
+        medItem.classList.add('med-item');
+
+        // Add medication name and concentration
+        medItem.innerHTML = `<h3>${productName}</h3><p>${productConcentration}</p>`;
+
+        // Create the "Editar" button
+        const editButton = document.createElement('button');
+        editButton.classList.add('med-button', 'edit-button');
+        editButton.textContent = 'Editar';
+        editButton.addEventListener('click', function() {
+          enterEditMode(productName, productConcentration, listItem);
+        });
+
+        // Create the "Eliminar" button
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('med-button', 'delete-button');
+        deleteButton.textContent = 'Eliminar';
+        deleteButton.addEventListener('click', function() {
+          listItem.remove();
+        });
+
+        // Append the buttons to the medication container
+        medItem.appendChild(editButton);
+        medItem.appendChild(deleteButton);
+
+        // Append the medication container to the list item
+        listItem.appendChild(medItem);
+
+        // Append the list item to the product list
+        document.querySelector('.product-list').appendChild(listItem);
+      }
+
+      // Clear the input fields
+      document.getElementById('product-name').value = '';
+      document.getElementById('product-concentration').value = '';
+    });
+
+    function enterEditMode(name, concentration, listItem) {
+      editMode = true;
+      editIndex = Array.from(document.querySelectorAll('.product-list-item')).indexOf(listItem);
+
+      document.getElementById('product-name').value = name;
+      document.getElementById('product-concentration').value = concentration;
+
+      const submitButton = document.querySelector('.product-button');
+      submitButton.textContent = 'Editado';
+      submitButton.style.backgroundColor = '#FFEB3B';
+
+      // Show the cancel button
+      document.querySelector('.cancel-button').style.display = 'inline-block';
+    }
+
+    function resetForm() {
+      editMode = false;
+      editIndex = null;
+
+      const submitButton = document.querySelector('.product-button');
+      submitButton.textContent = 'Agregar';
+      submitButton.style.backgroundColor = '#4CAF50';
+
+      document.getElementById('product-name').value = '';
+      document.getElementById('product-concentration').value = '';
+
+      // Hide the cancel button
+      document.querySelector('.cancel-button').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

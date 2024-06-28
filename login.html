@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión - MediWeb</title>
+  <link rel="shorcut icon" href="images/iconpestaña.png" type="image/x-icon">
+
+  <style>
+    body {
+      background-color: #ffffff; /* Light background */
+      color: #2b2b2b; /* Dark text color */
+      font-family: sans-serif; /* Modern font */
+      margin: 0; /* Remove default margin */
+      padding-top: 60px; /* Prevent content from hiding under the fixed header */
+    }
+    header {
+      background-color: #854fb8; /* Dark background for header */
+      color: #ffffff; /* Light text color */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      z-index: 1000;
+    }
+    .menu {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .menu li {
+      margin: 0 1rem;
+    }
+    .menu a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      position: relative;
+    }
+    .menu a::after { /* Hover underline  */
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: #f8f3fd;
+      bottom: -3px;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: bottom left;
+      transition: transform 0.3s ease-out;
+    }
+    .menu a:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+    .menu-button {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    .menu-button div {
+      width: 25px;
+      height: 3px;
+      background-color: #ffffff;
+      margin: 3px;
+    }
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #854fb8;
+        position: absolute;
+        top: 60px;
+        left: 0;
+      }
+      .menu li {
+        margin: 1rem 0;
+        text-align: center;
+      }
+      .menu-button {
+        display: flex;
+      }
+      .menu.show {
+        display: flex;
+      }
+    }
+
+    .login-container {
+      width: 360px; /* Width of the login container */
+      margin: 100px auto; /* Centering the container */
+      background-color: #ffffff; /* Background color of the container */
+      border-radius: 8px; /* Rounded corners */
+      padding: 40px; /* Padding inside the container */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+    }
+    .login-container h2 {
+      text-align: center; /* Centering the heading */
+      color: #1d1d1d; /* Heading color */
+    }
+    .login-form {
+      margin-top: 20px; /* Spacing between heading and form */
+    }
+    .form-group {
+      margin-bottom: 20px; /* Spacing between form fields */
+    }
+    .form-group label {
+      display: block; /* Display labels as block elements */
+      margin-bottom: 5px; /* Spacing between labels and inputs */
+      color: #555; /* Label color */
+    }
+    .form-group input {
+      width: 100%; /* Full width input */
+      padding: 10px; /* Padding inside input */
+      border: 1px solid #ccc; /* Border color */
+      border-radius: 4px; /* Rounded corners */
+      box-sizing: border-box; /* Include padding and border in the element's total width */
+    }
+    .form-group input:focus {
+      outline: none; /* Remove outline on focus */
+      border-color: #854fb8; /* Border color on focus */
+    }
+    .error {
+      border-color: #dc3545 !important; /* Red border color for error */
+    }
+    .form-group .error-message {
+      color: #dc3545; /* Red color for error message */
+      margin-top: 5px; /* Spacing for error message */
+    }
+    .btn {
+      width: 100%; /* Full width button */
+      background-color: #854fb8; /* Button background color */
+      color: #fff; /* Button text color */
+      padding: 10px; /* Padding inside button */
+      border: none; /* No border */
+      border-radius: 4px; /* Rounded corners */
+      cursor: pointer; /* Cursor style */
+      transition: background-color 0.3s; /* Smooth transition for background color */
+    }
+    .btn:hover {
+      background-color: #f1e3ff; /* Darker background color on hover */
+      color: #1d1d1d;
+    }
+
+    .logo img {
+      margin-top: 10px;
+      width: 250px; /* Ajusta el tamaño de la imagen del logo */
+      height: auto; /* Mantiene la proporción de la imagen */
+    }
+    
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logoblanco.png" alt="Logo" width="120px" height="70px">
+      </a>
+      
+    </div>
+    <div class="menu-button" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <ul class="menu">
+      <li><a href="vademecum.html">Vademecum</a></li>
+      <li><a href="ventas.html">Medicamentos</a></li>
+      <!--<li><a href="https://8081-idx-teachers-js-vanilla-1717021570831.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev/">Productos</a></li>-->
+      <li><a href="login.html">Iniciar sesión</a></li>
+    </ul>
+  </header>
+
+<div class="login-container">
+  <h2>Iniciar sesión</h2>
+  <form class="login-form" id="loginForm" onsubmit="return validateForm()">
+    <div class="form-group">
+      <label for="email">Nombre de usuario:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Contraseña:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit" class="btn">Iniciar sesión</button>
+  </form>
+</div>
+
+<script>
+  function validateForm() {
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    var valid = false;
+
+    // Check credentials
+    switch (email) {
+      case "guilleps082020@gmail.com":
+        valid = password === "guille1503";
+        break;
+      // Añadir más casos según sea necesario
+    }
+
+    // Handle validation result
+    if (valid) {
+      // Successful login, store the authenticated state and redirect to pedidos.html
+      localStorage.setItem("authenticated", "true");
+      window.location.href = "https://8080-idx-teachers-js-vanilla-1717021570831.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev/";
+      return false; // Prevent form submission
+    } else {
+      // Invalid login, display error message and clear fields
+      alert("¡Usuario o contraseña incorrectos!");
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("email").classList.add("error");
+      document.getElementById("password").classList.add("error");
+      return false;
+    }
+  }
+
+  function toggleMenu() {
+    document.querySelector('.menu').classList.toggle('show');
+  }
+</script>
+
+</body>
+</html>

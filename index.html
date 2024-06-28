@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - MediWeb</title>
+  <link rel="shorcut icon" href="images/iconpestaña.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #2b2b2b;
+      font-family: sans-serif;
+      margin: 0;
+      padding-top: 60px;
+    }
+
+    header {
+      background-color: transparent;
+      transition: background-color 0.3s, visibility 0.3s, opacity 0.3s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    header.scrolled {
+      background-color: #854fb8;
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .menu {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu li {
+      margin: 0 1rem;
+    }
+
+    .menu a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      position: relative;
+    }
+
+    .menu a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: #f8f3fd;
+      bottom: -3px;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: bottom left;
+      transition: transform 0.3s ease-out;
+    }
+
+    .menu a:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+
+    .menu-button {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .menu-button div {
+      width: 25px;
+      height: 3px;
+      background-color: #ffffff;
+      margin: 3px;
+    }
+
+    .titulo-descuento {
+      font-family: sans-serif;
+      font-size: 25px;
+      text-align: center;
+      font-style: bold;
+      color: #854fb8;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #854fb8;
+        position: absolute;
+        top: 60px;
+        left: 0;
+      }
+
+      .menu li {
+        margin: 1rem 0;
+        text-align: center;
+      }
+
+      .menu-button {
+        display: flex;
+      }
+
+      .menu.show {
+        display: flex;
+      }
+    }
+
+    .carousel-container {
+      width: 90%;
+      margin: 50px auto;
+      position: relative;
+    }
+
+    .carousel {
+      display: flex;
+      overflow: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      justify-content: space-between;
+    }
+
+    .carousel-item {
+      background-color: #c997f8;
+      flex: 1;
+      max-width: 18%;
+      text-align: center;
+      box-sizing: border-box;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .image-container,
+    .info-container {
+      border-radius: 5px;
+      padding: 5px;
+      margin-bottom: 2px;
+      border-radius: 8px;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 5px;
+      border-radius: 8px;
+    }
+
+    .carousel-item h2 {
+      font-size: 22px;
+      margin-bottom: 2px;
+      border-radius: 8px;
+    }
+
+    .carousel-item p {
+      font-size: 18px;
+      color: #1d1d1d;
+      margin-bottom: 5px;
+    }
+
+    .carousel-item .price {
+      margin-top: 25px;
+      font-size: 14px;
+      color: #f70a0a;
+    }
+
+    .carousel-item .priceDis {
+      font-size: 18px;
+      color: #1d1d1d;
+      margin-bottom: 30px;
+    }
+
+    .carousel-item .buy-button {
+      margin-bottom: 100%;
+      margin-top: 20px;
+      background-color: #854fb8;
+      border: #854fb8;
+      color: #ffffff;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .carousel-item .buy-button:hover {
+      border: #854fb8;
+      color: #2b2b2b;
+      background-color: #e8d0ff;
+      transform: scale(1.05);
+    }
+
+    #banner {
+      height: 900px;
+      width: 100%;
+      max-height: 60vh;
+      object-fit: cover;
+    }
+
+    #contenedor {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media (max-width: 770px) {
+      .carousel {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .carousel-item {
+        max-width: 65%;
+        margin: 10px;
+      }
+
+      #banner {
+
+        max-width: 100%;
+        height: 220px;
+        ;
+      }
+    }
+
+    .no-underline::after {
+      content: none;
+    }
+
+    .logo img {
+      margin-top: 10px;
+      width: 250px;
+      height: auto;
+    }
+
+    .sobre-nosotros {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 20px 60px;
+    }
+
+    .sobre-nosotros img {
+      max-width: 40%;
+      border-radius: 10px;
+      margin-right: 20px;
+    }
+
+    .sobre-nosotros p {
+      max-width: 60%;
+      font-size: 17px;
+      text-align: justify;
+    }
+
+    /* Agregado para reducir la distancia entre el logo y el texto */
+    .logo-container {
+      text-align: center;
+      margin-bottom: 0;
+    }
+
+    .logo-container img {
+      margin-top: -50px;
+      margin-bottom: 0;
+    }
+
+    .logo-text {
+      margin: 0;
+      padding: 0;
+      margin-bottom: 60px;
+    }
+
+  
+  </style>
+</head>
+
+<body>
+  <header id="main-header">
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logoblanco.png" alt="Logo" width="120px" height="70px">
+      </a>
+    </div>
+    <div class="menu-button" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <ul class="menu">
+      <li><a href="vademecum.html">Vademecum</a></li>
+      <li><a href="ventas.html">Medicamentos</a></li>
+      <li><a href="login.html">Iniciar sesión</a></li>
+    </ul>
+  </header>
+
+
+  <div class="logo-container">
+    <a href="index.html">
+      <img src="images/logomorado.png" alt="Logo" width="270px" height="auto">
+    </a>
+  </div>
+
+
+
+  <div id="banner" style="margin-bottom: 80px">
+    <img id="banner" src="images/familiaBan7.jpg" alt="Banner Image">
+  </div>
+
+
+  <body>
+    <div class="carousel-container">
+      <p class="titulo-descuento">Descuentos de la semana</p>
+      <div class="carousel">
+        <div class="carousel-item">
+          <div class="image-container">
+            <a href="acetaminofen.html" class="no-underline">
+              <img src="images/Acetaminofen.webp" alt="Acetaminofén">
+            </a>
+          </div>
+          <div class="info-container">
+            <h2>Acetaminofén</h2>
+            <p>500mg</p>
+            <p class="price">Antes: $18.950</p>
+            <p class="priceDis">Ahora: $15.160</p>
+            <a href="acetaminofen.html" class="buy-button">Comprar ahora</a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="image-container">
+            <a href="aspirina.html">
+              <img src="images/Aspirina.webp" alt="Aspirina">
+            </a>
+          </div>
+          <div class="info-container">
+            <h2>Aspirina</h2>
+            <p>500mg</p>
+            <p class="price">Antes: $18.900</p>
+            <p class="priceDis">Ahora: $15.120</p>
+            <a href="aspirina.html" class="buy-button">Comprar ahora</a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="image-container">
+            <a href="loratadina.html">
+              <img src="images/Loratadina.jpg" alt="Loratadina">
+            </a>
+          </div>
+          <div class="info-container">
+            <h2>Loratadina</h2>
+            <p>5mg</p>
+            <p class="price">Antes: $25.000</p>
+            <p class="priceDis">Ahora: $20.000</p>
+            <a href="loratadina.html" class="buy-button">Comprar ahora</a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="image-container">
+            <a href="mieltertos.html">
+              <img src="images/Mieltertos.jpg" alt="Mieltertos">
+            </a>
+          </div>
+          <div class="info-container">
+            <h2>Mieltertos</h2>
+            <p>240ml</p>
+            <p class="price">Antes: $33.500</p>
+            <p class="priceDis">Ahora: $21.172</p>
+            <a href="mieltertos.html" class="buy-button">Comprar ahora</a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="image-container">
+            <a href="salbutamol.html">
+              <img src="images/Salbutamol.jpg" alt="Salbutamol">
+            </a>
+          </div>
+          <div class="info-container">
+            <h2>Salbutamol</h2>
+            <p>100mcg</p>
+            <p class="price">Antes: $26.160</p>
+            <p class="priceDis">Ahora: $21.800</p>
+            <a href="salbutamol.html" class="buy-button">Comprar ahora</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p style="text-align: center; font-size: 24px; margin-top: 130px;">Sobre nosostros</p>
+      <p style="font-size: 17px; text-align: justify; margin-left: 60px; margin-right: 60px;">MediWeb surgió como una
+        idea de negocio
+        familiar, donde te ofrecemos una amplia variedad de productos farmacéuticos. En nuestra página podrás encontrar
+        múltiples
+        medicamentos de diversos laboratorios. Además, somos una página segura, donde podrás realizar tus compras con un
+        solo clic, y lo llevaremos a la puerta de tu casa (o farmacia). En MediWeb tu salud es nuestra prioridad. 💜😊
+      </p>
+    </div>
+
+
+
+
+    <div class="nuestras_marcas">
+      <h2 style="text-align: center;">Nuestras marcas</h2>
+    </div>
+
+    <div class="div-marcas">
+      <div class="carousel-marcas-container">
+        <div class="carousel-marcas">
+          <div class="carousel-marcas-item">
+            <img src="images/GENFAR.png" alt="Marca 1">
+          </div>
+          <div class="carousel-marcas-item">
+            <img src="images/MK.webp" alt="Marca 2">
+          </div>
+          <div class="carousel-marcas-item">
+            <img src="images/LA-SANTE2.jpg" alt="Marca 3">
+          </div>
+          <div class="carousel-marcas-item">
+            <img src="images/PROCAPS2.jpg" alt="Marca 4">
+          </div>
+          <div class="carousel-marcas-item">
+            <img src="images/ECAR.jpg" alt="Marca 5">
+          </div>
+          <div class="carousel-marcas-item">
+            <img src="images/BAYER5.jpg" alt="Marca 6">
+          </div>
+          <div class="carousel-marcas-item">
+            <img src="images/tqlogo2.jpg" alt="Marca 6">
+          </div>
+        </div>
+        <div class="carousel-marcas-controls">
+          <button class="carousel-marcas-button" id="prev" onclick="scrollCarousel(-1)">&#10094;</button>
+          <button class="carousel-marcas-button" id="next" onclick="scrollCarousel(1)">&#10095;</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function scrollCarousel(direction) {
+        const carousel = document.querySelector('.carousel-marcas');
+        const scrollAmount = carousel.clientWidth / 2 * direction;
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    </script>
+
+
+    <header>
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logoblanco.png" alt="Logo" width="120px" height="70px">
+        </a>
+      </div>
+      <div class="menu-button" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <ul class="menu">
+        <li><a href="vademecum.html">Vademecum</a></li>
+        <li><a href="ventas.html">Medicamentos</a></li>
+        <li><a href="login.html">Iniciar sesión</a></li>
+        <!--<li><a href="https://8081-idx-teachers-js-vanilla-1717021570831.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev/">Productos</a></li>-->
+      </ul>
+
+    </header>
+    <script>
+      function toggleMenu() {
+        const menu = document.querySelector('.menu');
+        menu.classList.toggle('show');
+      }
+
+      window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 100) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+    </script>
+
+    
+
+    <footer style="background-color: #854fb8; color: #ffffff; padding: 20px;">
+      <div style="text-align: left; margin-left: auto; margin-right: auto;">
+        <!-- Cambiar el tamaño de la imagen a la izquierda -->
+        <img src="images/logoblanco.png" alt="Logo Blanco" width="300px">
+        <!-- Agregar mapa de Google -->
+
+      </div>
+
+      <div style="text-align: center; margin-left: auto; margin-right: auto;">
+      </div>
+
+      <div style="text-align: right; margin-left: auto; margin-right: auto;">
+        <!-- Edición del tamaño del letrero de derechos de autor -->
+        <img src="images/super.png" alt="Super" width="200px">
+        <p style="color: #854fb8; font-size: 0.5px;">.</p>
+        <a href="https://wa.me/3118508486"><img src="images/chat.png" alt="WhatsApp" width="200px"></a>
+        <p style="font-size: 14px;">© 2024 MediWeb. Todos los derechos reservados. | <a href="mailto:ventasypedidos.mediweb@gmail.com">ventasypedidos.mediweb@gmail.com</a></p>
+      </div>
+    </footer>
+
+
+
+  </body>
+
+</html>

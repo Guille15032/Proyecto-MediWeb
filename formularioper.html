@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos Personas - MediWeb</title>
+    <link rel="shorcut icon" href="images/iconpestaña.png" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #ffffff;
+            /* Light background */
+            color: #2b2b2b;
+            /* Dark text color */
+            font-family: sans-serif;
+            /* Modern font */
+            margin: 0;
+            /* Remove default margin */
+            padding-top: 80px;
+            /* Prevent content from hiding under the fixed header */
+        }
+
+        header {
+            background-color: #854fb8;
+            /* Dark background for header */
+            color: #ffffff;
+            /* Light text color */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            z-index: 1000;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            margin: 0 1rem;
+        }
+
+        .menu a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .menu a::after {
+            /* Hover underline  */
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #f8f3fd;
+            bottom: -3px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom left;
+            transition: transform 0.3s ease-out;
+        }
+
+        .menu a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .menu-button {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .menu-button div {
+            width: 25px;
+            height: 3px;
+            background-color: #ffffff;
+            margin: 3px;
+        }
+
+        .logo img {
+            margin-top: 10px;
+            width: 250px;
+            /* Ajusta el tamaño de la imagen del logo */
+            height: auto;
+            /* Mantiene la proporción de la imagen */
+        }
+
+        .product-container {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            gap: 20px;
+            justify-content: center;
+            /* Center the content horizontally */
+            margin-top: 40px;
+            /* Add space below the header */
+        }
+
+        .product-container img {
+            width: 550px;
+            height: auto;
+        }
+
+        .product-details {
+            max-width: 600px;
+            text-align: left;
+            /* Align the details text to the left */
+        }
+
+        .product-details h1 {
+            font-size: 2rem;
+        }
+
+        .product-details p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .product-details .price {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+
+        .buy-button {
+            background-color: #854fb8;
+            color: #ffffff;
+            padding: 15px 30px;
+            /* Make the button larger */
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            /* Add space above the button */
+            width: 100%;
+            /* Make the button full-width */
+        }
+
+        .buy-button:hover {
+            background-color: #6b3fa5;
+            border-radius: 10px;
+
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: justify;
+        }
+
+        footer {
+            background-color: #854fb8;
+            color: #ffffff;
+            padding: 20px;
+            text-align: right;
+        }
+
+        footer img {
+            width: 200px;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #f9f9f9;
+            /* Light background for the form */
+            text-align: center;
+            /* Center the content inside */
+        }
+
+        form {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            /* Add internal padding */
+        }
+
+        .field {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .field input {
+            width: calc(100% - 20px);
+            /* Ensure the input doesn't touch the edges */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 0 auto;
+            /* Center the input */
+            display: block;
+            /* Make the margin auto work */
+        }
+
+        #button {
+            background-color: #854fb8;
+            color: #ffffff;
+            padding: 15px 30px;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: calc(100% - 20px);
+            /* Ensure the button doesn't touch the edges */
+            margin-top: 10px;
+            margin: 0 auto;
+            /* Center the button */
+            display: block;
+            border-radius: 10px;
+
+            /* Make the margin auto work */
+        }
+
+        #button:hover {
+            background-color: #6b3fa5;
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #854fb8;
+                position: absolute;
+                top: 60px;
+                left: 0;
+            }
+
+            .menu li {
+                margin: 1rem 0;
+                text-align: center;
+            }
+
+            .menu-button {
+                display: flex;
+            }
+
+            .menu.show {
+                display: flex;
+            }
+
+            .product-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .product-container img {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .product-details {
+                text-align: left;
+            }
+        }
+
+        #button:disabled {
+            background-color: #8d53c494;
+            color: #ffffffc4;
+            cursor: not-allowed;
+            border-radius: 10px;
+
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .checkbox-container input {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logoblanco.png" alt="Logo" width="120px" height="70px">
+            </a>
+        </div>
+        <div class="menu-button" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul class="menu">
+            <li><a href="vademecum.html">Vademecum</a></li>
+            <li><a href="ventas.html">Medicamentos</a></li>
+            <!--<li><a href="https://8081-idx-teachers-js-vanilla-1717021570831.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev/">Productos</a></li>-->
+            <li><a href="login.html">Iniciar sesión</a></li>
+        </ul>
+    </header>
+
+    <div>
+        <h2 style="text-align: center;">
+            Haz tu pedido en MediWeb
+        </h2>
+        <p style="text-align: center;">
+            (Formulario para pedidos de clientes)
+        </p>
+    </div>
+
+    <div class="form-container">
+        <form id="form">
+            <div class="field">
+                <label for="name">Nombre completo</label>
+                <input type="text" name="name" id="name">
+            </div>
+            <div class="field">
+                <label for="address">Dirección</label>
+                <input type="text" name="address" id="address">
+            </div>
+            <div class="field">
+                <label for="Cel">Telefono de celular</label>
+                <input type="text" name="Cel" id="Cel">
+            </div>
+            <div class="field">
+                <label for="venta">Pedido</label>
+                <input style="height: 100px;" type="text" name="venta" id="venta" readonly>
+            </div>
+
+            <h2>Productos en el Carrito</h2>
+            <div id="productos-carrito">
+                <!-- Aquí se mostrarán los productos del carrito -->
+            </div>
+            <h3>Total: $<span id="total-precio"></span></h3>
+            <div class="checkbox-container">
+                <input type="checkbox" id="enableButtonCheckbox">
+                <label for="enableButtonCheckbox">Acepto la Politica de Tratamiento de Datos Personales</label>
+            </div>
+
+            <input type="submit" id="button" value="Hacer pedido" disabled>
+        </form>
+
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+        <script>
+            emailjs.init('nZmr7nzWNo6721stQ');
+        </script>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const productosCarrito = document.getElementById('productos-carrito');
+    const totalPrecioEl = document.getElementById('total-precio');
+    const ventaInput = document.getElementById('venta');
+    const carritoItems = JSON.parse(sessionStorage.getItem('carritoItems')) || [];
+    let totalPrecio = parseFloat(sessionStorage.getItem('totalPrecio')) || 0;
+
+    function actualizarVentaInput() {
+        const pedido = carritoItems.map(item => `${item.nombre} (${item.precio})`).join(', ');
+        ventaInput.value = pedido;
+    }
+
+    function actualizarTotalPrecio() {
+        totalPrecio = carritoItems.reduce((sum, item) => {
+            const precioNumerico = parseFloat(item.precio.replace(/[^\d.-]/g, '')); // Convertir precio a número, eliminando caracteres no numéricos
+            return sum + (isNaN(precioNumerico) ? 0 : precioNumerico); // Sumar el precio, asegurándonos de manejar valores no numéricos
+        }, 0);
+        totalPrecioEl.textContent = totalPrecio.toFixed(0); // Actualizar el total en la interfaz sin formato de moneda
+        sessionStorage.setItem('totalPrecio', totalPrecio.toFixed(0)); // Guardar el total sin decimales en sessionStorage
+    }
+
+    function eliminarProducto(index) {
+        carritoItems.splice(index, 1);
+        sessionStorage.setItem('carritoItems', JSON.stringify(carritoItems));
+        mostrarProductos();
+        actualizarVentaInput();
+        actualizarTotalPrecio();
+    }
+
+    function mostrarProductos() {
+        productosCarrito.innerHTML = '';
+        carritoItems.forEach((item, index) => {
+            const productoCarrito = document.createElement('div');
+            productoCarrito.classList.add('carrito-item');
+            productoCarrito.innerHTML = `<h4>${item.nombre}</h4><p>${item.precio}</p><button type="button" onclick="eliminarProducto(${index})">Eliminar</button>`;
+            productosCarrito.appendChild(productoCarrito);
+        });
+    }
+
+    window.eliminarProducto = eliminarProducto;
+    mostrarProductos();
+    actualizarVentaInput();
+    totalPrecioEl.textContent = totalPrecio.toFixed(0);
+
+    document.getElementById('enableButtonCheckbox').addEventListener('change', function () {
+        document.getElementById('button').disabled = !this.checked;
+    });
+
+    const irAPagarBtn = document.getElementById('irAPagarBtn');
+    irAPagarBtn.addEventListener('click', () => {
+        const carritoItems = [];
+        productosCarrito.querySelectorAll('.carrito-item').forEach(item => {
+            const nombreProducto = item.querySelector('h4').innerText;
+            const precioProducto = item.querySelector('p:last-of-type').innerText;
+            carritoItems.push({ nombre: nombreProducto, precio: precioProducto });
+        });
+        sessionStorage.setItem('carritoItems', JSON.stringify(carritoItems));
+        sessionStorage.setItem('totalPrecio', totalPrecio); // Guardar el total en sessionStorage
+        window.location.href = 'formularioper.html'; // Redirigir al formulario de pago
+    });
+});
+
+    </script>
+
+
+    </div>
+
+    <footer>
+        <div style="text-align: left;">
+            <img src="images/logoblanco.png" alt="Logo Blanco" width="300px">
+        </div>
+        <div>
+            <img src="images/super.png" alt="Super" width="200px">
+            <p style="color: #854fb8; font-size: 0.5px;">.</p>
+            <a href="https://wa.me/3118508486"><img src="images/chat.png" alt="WhatsApp" width="200px"></a>
+            <p>© 2024 MediWeb. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.menu').classList.toggle('show');
+        }
+
+        document.getElementById('enableButtonCheckbox').addEventListener('change', function () {
+            const btn = document.getElementById('button');
+            btn.disabled = !this.checked;
+        });
+
+        document.getElementById('form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const btn = document.getElementById('button');
+            btn.value = 'Procesando tu pedido...';
+
+            const serviceID = 'default_service';
+            const templateID = 'template_7or97c2';
+
+            emailjs.sendForm(serviceID, templateID, this)
+                .then(() => {
+                    btn.value = 'Hacer pedido';
+                    document.getElementById('form').reset();
+                    btn.disabled = true; // 
+                    localStorage.setItem('orderPlaced', 'true');
+                    window.location.href = 'venta-exitosa.html';
+                }, (err) => {
+                    btn.value = 'Hacer pedido';
+                    alert(JSON.stringify(err));
+                });
+        });
+    </script>
+
+
+</body>
+
+</html>

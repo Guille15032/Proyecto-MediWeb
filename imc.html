@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de IMC - MediWeb</title>
+  <link rel="shorcut icon" href="images/iconpestaña.png" type="image/x-icon">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #2b2b2b;
+      font-family: sans-serif;
+      margin: 0;
+      padding-top: 80px;
+    }
+
+    header {
+      background-color: #854fb8;
+      color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      z-index: 1000;
+    }
+
+    .menu {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu li {
+      margin: 0 1rem;
+    }
+
+    .menu a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      position: relative;
+    }
+
+    .menu a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: #f8f3fd;
+      bottom: -3px;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: bottom left;
+      transition: transform 0.3s ease-out;
+    }
+
+    .menu a:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+
+    .menu-button {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .menu-button div {
+      width: 25px;
+      height: 3px;
+      background-color: #ffffff;
+      margin: 3px;
+    }
+
+    .logo img {
+      margin-top: 10px;
+      width: 250px;
+      height: auto;
+    }
+
+    .content {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: justify;
+    }
+
+    footer {
+      background-color: #854fb8;
+      color: #ffffff;
+      padding: 20px;
+      text-align: right;
+    }
+
+    footer img {
+      width: 200px;
+    }
+
+    footer p {
+      font-size: 14px;
+    }
+
+    .form-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background-color: #f9f9f9;
+      text-align: center;
+    }
+
+    form {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .field {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .field input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    #button {
+      background-color: #854fb8;
+      color: #ffffff;
+      padding: 15px 30px;
+      text-decoration: none;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: calc(100% - 20px);
+      margin-top: 10px;
+      margin: 0 auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    #button:hover {
+      background-color: #6b3fa5;
+    }
+
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #854fb8;
+        position: absolute;
+        top: 60px;
+        left: 0;
+      }
+
+      .menu li {
+        margin: 1rem 0;
+        text-align: center;
+      }
+
+      .menu-button {
+        display: flex;
+      }
+
+      .menu.show {
+        display: flex;
+      }
+
+
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logoblanco.png" alt="Logo" width="120px" height="70px">
+      </a>
+    </div>
+    <div class="menu-button" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <ul class="menu">
+      <li><a href="vademecum.html">Vademecum</a></li>
+      <li><a href="ventas.html">Medicamentos</a></li>
+      <li><a href="login.html">Iniciar sesión</a></li>
+    </ul>
+  </header>
+
+  <div class="tabla">
+    <h2 style="text-align: center;">
+      Calculadora de IMC
+    </h2>
+    <p style="text-align: center;">
+      Ingresa tus datos para calcular tu Índice de Masa Corporal (IMC)
+    </p>
+  </div>
+
+  <div class="form-container">
+    <form id="bmi-form">
+      <div class="field">
+        <label for="height">Altura (cm)</label>
+        <input type="number" name="height" id="height" required>
+      </div>
+      <div class="field">
+        <label for="weight">Peso (kg)</label>
+        <input type="number" name="weight" id="weight" required>
+      </div>
+      <button type="submit" id="button">Calcular IMC</button>
+      <div id="result"></div>
+    </form>
+  </div> 
+  
+
+  <footer>
+    <div style="text-align: left;">
+      <img src="images/logoblanco.png" alt="Logo Blanco" width="300px">
+    </div>
+    <div>
+      <img src="images/super.png" alt="Super" width="200px">
+      <p style="color: #854fb8; font-size: 0.5px;">.</p>
+      <a href="https://wa.me/3118508486"><img src="images/chat.png" alt="WhatsApp" width="200px"></a>
+      <p>© 2024 MediWeb. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.querySelector('.menu').classList.toggle('show');
+    }
+
+    document.getElementById('bmi-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const height = parseFloat(document.getElementById('height').value) / 100;
+      const weight = parseFloat(document.getElementById('weight').value);
+      const bmi = (weight / (height * height)).toFixed(2);
+
+      let resultText = `Tu IMC es ${bmi}. `;
+
+      if (bmi < 18.5) {
+        resultText += 'Estás bajo de peso.';
+      } else if (bmi < 24.9) {
+        resultText += 'Tienes un peso normal.';
+      } else if (bmi < 29.9) {
+        resultText += 'Estás en sobrepeso.';
+      } else {
+        resultText += 'Tienes obesidad.';
+      }
+
+      document.getElementById('result').textContent = resultText;
+    });
+  </script>
+</body>
+
+</html>

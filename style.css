@@ -1,0 +1,139 @@
+body {
+    background-color: #F1F1F1; /* Gris claro */
+    color: #1d1d1d;
+    font-family: sans-serif;
+    margin: 0;
+    padding-top: 60px;
+  }
+  
+  header {
+    background-color: #03A9F4; /* Azul claro */
+    color: #FFFFFF; /* Blanco */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 1000;
+  }
+  
+  .menu a {
+    color: #FFFFFF; /* Blanco */
+    text-decoration: none;
+    font-size: 1.2rem;
+  }
+  
+  .carousel-item .buy-button {
+    background-color: #83e415; /* Verde claro */
+    color: #FFFFFF; /* Blanco */
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  
+  
+  .carousel-item .price {
+    color: #03A9F4; /* Azul claro */
+  }
+  
+  .no-underline::after {
+    content: none;
+  }
+  
+
+  .nuestras_marcas{
+    margin-top: 300px;
+  }
+
+  .div-marcas{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+
+  /* Centrar el título "Nuestras marcas" */
+.div-marcas h2 {
+  text-align: center;
+  margin-bottom: 0px;
+}
+
+/* Carrusel de marcas */
+.carousel-marcas-container {
+  width: 80%;
+  margin: 50px auto;
+  position: relative;
+}
+
+.carousel-marcas {
+  display: flex;
+  overflow: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.carousel-marcas-item {
+  flex: 0 0 auto;
+  width: 20%;
+  margin: 0 10px;
+  box-sizing: border-box;
+}
+
+.carousel-marcas-item img {
+  width: 50%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.carousel-marcas-controls {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.carousel-marcas-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.carousel-marcas-button:disabled {
+  background-color: rgba(0, 0, 0, 0.2);
+  cursor: default;
+}
+
+@media (max-width: 768px) {
+  .carousel-marcas-item {
+    width: 80%;
+    margin: 10px 0;
+  }
+}
+
+.div-marcas {
+  text-align: center;
+  margin-top: 50px; /* Ajusta este valor según sea necesario */
+}
+
+.filter-container {
+  text-align: right;
+  margin-right: 20px;
+}
+
+.filter-container p {
+  float: left;
+  margin-right: 10px;
+}
+
+  
