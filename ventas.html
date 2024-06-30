@@ -325,6 +325,32 @@
             padding: 10px;
             border-radius: 10px;
         }
+
+        #vaciar-carrito,
+        #ir-a-pagar {
+            display: block;
+            margin-bottom: 10px;
+            /* Espacio entre los botones */
+            width: 100%;
+            /* O ajusta al ancho que prefieras */
+        }
+
+        #ir-a-pagar {
+            margin-bottom: 0;
+            /* Quitar el margen inferior del último botón */
+        }
+
+        .agregar-carrito-btn {
+            background-color: #854fb8;
+            color: #ffffff;
+            padding: 15px 30px;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 10px;
+        }
     </style>
 </head>
 
@@ -401,8 +427,8 @@
             <h3>Total: $<span id="total-precio">0</span></h3>
 
             <div>
+                <button id="ir-a-pagar" class="agregar-carrito-btn">Hacer mi pedido</button>
                 <button id="vaciar-carrito">Vaciar Carrito</button>
-                <button id="ir-a-pagar" class="agregar-carrito-btn">Ir a Pagar</button>
             </div>
         </div>
 

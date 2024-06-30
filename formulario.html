@@ -304,6 +304,50 @@
     .checkbox-container input {
       margin-right: 10px;
     }
+
+    .eliminar-btn {
+            background-color: #854fb8;
+            color: #ffffff;
+            padding: 5px;
+            text-decoration: none;
+            border: none;
+            border-radius: 50%;
+            /* Hacerlo circular */
+            font-size: 1rem;
+            cursor: pointer;
+            width: 30px;
+            /* Ancho del botón */
+            height: 30px;
+            /* Altura del botón */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+    .carrito-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .item-contenedor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-detalles {
+            flex-grow: 1;
+        }
+
+        .item-detalles h4,
+        .item-detalles p {
+            margin: 0;
+            padding: 5px 0;
+        }
   </style>
 </head>
 
@@ -385,11 +429,20 @@
       const totalPrecioEl = document.getElementById('total-precio');
       const ventaInput = document.getElementById('venta');
       const carritoItems = JSON.parse(sessionStorage.getItem('carritoItems')) || [];
-      const totalPrecio = sessionStorage.getItem('totalPrecio') || 0;
+      let totalPrecio = parseFloat(sessionStorage.getItem('totalPrecio')) || 0;
 
       function actualizarVentaInput() {
         const pedido = carritoItems.map(item => `${item.nombre} (${item.precio})`).join(', ');
         ventaInput.value = pedido;
+      }
+
+      function actualizarTotalPrecio() {
+        totalPrecio = carritoItems.reduce((sum, item) => {
+          const precioNumerico = parseFloat(item.precio.replace(/[^\d.-]/g, '')); // Convertir precio a número, eliminando caracteres no numéricos
+          return sum + (isNaN(precioNumerico) ? 0 : precioNumerico); // Sumar el precio, asegurándonos de manejar valores no numéricos
+        }, 0);
+        totalPrecioEl.textContent = totalPrecio.toFixed(0); // Actualizar el total en la interfaz sin formato de moneda
+        sessionStorage.setItem('totalPrecio', totalPrecio.toFixed(0)); // Guardar el total sin decimales en sessionStorage
       }
 
       function eliminarProducto(index) {
@@ -397,28 +450,51 @@
         sessionStorage.setItem('carritoItems', JSON.stringify(carritoItems));
         mostrarProductos();
         actualizarVentaInput();
+        actualizarTotalPrecio();
       }
 
       function mostrarProductos() {
-        productosCarrito.innerHTML = '';
-        carritoItems.forEach((item, index) => {
-          const productoCarrito = document.createElement('div');
-          productoCarrito.classList.add('carrito-item');
-          productoCarrito.innerHTML = `<h4>${item.nombre}</h4><p>${item.precio}</p><button onclick="eliminarProducto(${index})">Eliminar</button>`;
-          productosCarrito.appendChild(productoCarrito);
-        });
-      }
+                productosCarrito.innerHTML = '';
+                carritoItems.forEach((item, index) => {
+                    const productoCarrito = document.createElement('div');
+                    productoCarrito.classList.add('carrito-item');
+                    productoCarrito.innerHTML = `
+            <div class="item-contenedor">
+                <div class="item-detalles">
+                    <h4>${item.nombre}</h4>
+                    <p>${item.precio}</p>
+                </div>
+                <button type="button" class="eliminar-btn" onclick="eliminarProducto(${index})">❌</button>
+            </div>`;
+                    productosCarrito.appendChild(productoCarrito);
+                });
+            }
 
       window.eliminarProducto = eliminarProducto;
-      totalPrecioEl.textContent = totalPrecio;
       mostrarProductos();
       actualizarVentaInput();
+      totalPrecioEl.textContent = totalPrecio.toFixed(0);
 
       document.getElementById('enableButtonCheckbox').addEventListener('change', function () {
         document.getElementById('button').disabled = !this.checked;
       });
+
+      const irAPagarBtn = document.getElementById('irAPagarBtn');
+      irAPagarBtn.addEventListener('click', () => {
+        const carritoItems = [];
+        productosCarrito.querySelectorAll('.carrito-item').forEach(item => {
+          const nombreProducto = item.querySelector('h4').innerText;
+          const precioProducto = item.querySelector('p:last-of-type').innerText;
+          carritoItems.push({ nombre: nombreProducto, precio: precioProducto });
+        });
+        sessionStorage.setItem('carritoItems', JSON.stringify(carritoItems));
+        sessionStorage.setItem('totalPrecio', totalPrecio); // Guardar el total en sessionStorage
+        window.location.href = 'formulari.html'; // Redirigir al formulario de pago
+      });
     });
+
   </script>
+
   </div>
 
   <footer>
